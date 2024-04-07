@@ -96,7 +96,6 @@
 		tfa_max_range = <8000>;
 		tfa_default_mohm = <6000>;
 		tfa_channel = <0>;
-		is_use_freq = <1>;
 		status = "ok";
 	};
 	tfa98xx@35 {
@@ -108,7 +107,6 @@
 		tfa_max_range = <8000>;
 		tfa_default_mohm = <6000>;
 		tfa_channel = <1>;
-		is_use_freq = <1>;
 		status = "ok";
 	};
 };
