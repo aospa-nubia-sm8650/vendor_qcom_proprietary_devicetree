@@ -77,6 +77,16 @@
 #include <wlan_mlo_mgr_peer.h>
 #endif
 
+/* Table 9-276—Meaning of Local Maximum Transmit Power Count subfield
+ * if the Maximum Transmit Power Interpretation subfield is 0 or 2
+ */
+#define MAX_TX_PWR_COUNT_FOR_160MHZ 3
+
+/* Table 9-277—Meaning of Maximum Transmit Power Count subfield
+ * if Maximum Transmit Power Interpretation subfield is 1 or 3
+ */
+#define MAX_TX_PWR_COUNT_FOR_160MHZ_PSD 4
+
 /* SME REQ processing function templates */
 static bool __lim_process_sme_sys_ready_ind(struct mac_context *, uint32_t *);
 static bool __lim_process_sme_start_bss_req(struct mac_context *,
@@ -5682,6 +5692,10 @@ void lim_parse_tpe_ie(struct mac_context *mac, struct pe_session *session,
 
 	if (non_psd_set && !psd_set) {
 		single_tpe = tpe_ies[non_psd_index];
+		if (single_tpe.max_tx_pwr_count > MAX_TX_PWR_COUNT_FOR_160MHZ) {
+			pe_debug("bad max tx pwr count: %d", single_tpe.max_tx_pwr_count);
+			single_tpe.max_tx_pwr_count = MAX_TX_PWR_COUNT_FOR_160MHZ;
+		}
 		vdev_mlme->reg_tpc_obj.is_psd_power = false;
 		vdev_mlme->reg_tpc_obj.eirp_power = 0;
 		bw_num = sizeof(get_next_higher_bw) /
@@ -5719,6 +5733,10 @@ void lim_parse_tpe_ie(struct mac_context *mac, struct pe_session *session,
 
 	if (psd_set) {
 		single_tpe = tpe_ies[psd_index];
+		if (single_tpe.max_tx_pwr_count > MAX_TX_PWR_COUNT_FOR_160MHZ_PSD) {
+			pe_debug("bad max tx pwr count psd: %d", single_tpe.max_tx_pwr_count);
+			single_tpe.max_tx_pwr_count = MAX_TX_PWR_COUNT_FOR_160MHZ_PSD;
+		}
 		vdev_mlme->reg_tpc_obj.is_psd_power = true;
 		num_octets =
 			lim_get_num_tpe_octets(single_tpe.max_tx_pwr_count);

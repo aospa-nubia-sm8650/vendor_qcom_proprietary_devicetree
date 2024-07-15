@@ -93,6 +93,7 @@
 #define FIRST_APPLICATION_UID  10000
 #define LAST_APPLICATION_UID   19999
 #define MAX_CLUSTER            (4)
+#define SCHED_UX_STATE_DEBUG_MAGIC  123456789
 
 extern pid_t save_audio_tgid;
 extern pid_t save_top_app_tgid;

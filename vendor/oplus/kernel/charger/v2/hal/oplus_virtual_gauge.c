@@ -2958,13 +2958,12 @@ static int oplus_chg_vg_get_battinfo_sn(struct oplus_chg_ic_dev *ic_dev, char bu
 {
 	struct oplus_virtual_gauge_ic *chip;
 	int i;
-	int rc;
+	int rc = 0;
 #ifdef CONFIG_OPLUS_CHG_IC_DEBUG
 	struct oplus_chg_ic_overwrite_data *data;
 	const void *overwrite_buf;
 	int index;
 #endif
-
 
 	if (ic_dev == NULL) {
 		chg_err("oplus_chg_ic_dev is NULL");

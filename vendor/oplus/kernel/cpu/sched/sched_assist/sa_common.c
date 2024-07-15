@@ -420,7 +420,14 @@ noinline int tracing_mark_write(const char *buf)
 
 void ux_state_systrace_c(unsigned int cpu, struct task_struct *p)
 {
-	int ux_state = (oplus_get_ux_state(p) & (SCHED_ASSIST_UX_MASK | SA_TYPE_INHERIT));
+	int ux_state = 0;
+
+	/* When get_oplus_task_struct is empty, the error code is defined as 123456789
+	 * for debugging purposes */
+	if (IS_ERR_OR_NULL(get_oplus_task_struct(p)))
+		ux_state = SCHED_UX_STATE_DEBUG_MAGIC;
+	else
+		 ux_state =  (oplus_get_ux_state(p) & (SCHED_ASSIST_UX_MASK | SA_TYPE_INHERIT));
 
 	if (per_cpu(prev_ux_state, cpu) != ux_state) {
 		char buf[256];

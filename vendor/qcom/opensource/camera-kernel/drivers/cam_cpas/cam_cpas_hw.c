@@ -3560,6 +3560,7 @@ static int cam_cpas_dump_state_monitor_array_info(
 	if (buf_len <= dump_info->offset) {
 		CAM_WARN(CAM_CPAS, "Dump buffer overshoot len %zu offset %zu",
 			buf_len, dump_info->offset);
+		cam_mem_put_cpu_buf(dump_info->buf_handle);
 		return -ENOSPC;
 	}
 
@@ -3598,6 +3599,7 @@ static int cam_cpas_dump_state_monitor_array_info(
 	if (remain_len < min_len) {
 		CAM_WARN(CAM_CPAS, "Dump buffer exhaust remain %zu min %u",
 			remain_len, min_len);
+		cam_mem_put_cpu_buf(dump_info->buf_handle);
 		return -ENOSPC;
 	}
 
@@ -3614,6 +3616,7 @@ static int cam_cpas_dump_state_monitor_array_info(
 			&cpas_core->monitor_entries[index].identifier_string);
 		if (rc) {
 			CAM_ERR(CAM_CPAS, "Dump state info failed, rc: %d", rc);
+			cam_mem_put_cpu_buf(dump_info->buf_handle);
 			return rc;
 		}
 
@@ -3621,6 +3624,7 @@ static int cam_cpas_dump_state_monitor_array_info(
 	}
 
 	dump_info->offset = dump_args.offset;
+	cam_mem_put_cpu_buf(dump_info->buf_handle);
 
 	return rc;
 }
@@ -4615,9 +4619,10 @@ int cam_cpas_hw_probe(struct platform_device *pdev,
 	cpas_core->ahb_bus_scaling_disable = false;
 	cpas_core->full_state_dump = false;
 	cpas_core->smart_qos_dump = false;
+#ifdef OPLUS_FEATURE_CAMERA_COMMON
 	cpas_core->force_hlos_drv = true;
 	cpas_core->force_cesta_sw_client = true;
-
+#endif
 	atomic64_set(&cpas_core->monitor_head, -1);
 
 	mutex_init(&cpas_hw->hw_mutex);

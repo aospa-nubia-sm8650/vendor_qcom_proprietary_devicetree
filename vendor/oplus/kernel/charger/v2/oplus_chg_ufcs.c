@@ -1906,11 +1906,6 @@ static int oplus_ufcs_charge_start(struct oplus_ufcs *chip)
 			chg_err("set cp work start error, rc=%d\n", rc);
 			return rc;
 		}
-		rc = oplus_ufcs_pdo_set(chip, chip->config.target_vbus_mv, UFCS_START_DEF_CURR_MA);
-		if (rc < 0) {
-			chg_err("pdo set error, rc=%d\n", rc);
-			return rc;
-		}
 		chip->start_retry_count = 0;
 		chip->start_check = true;
 
@@ -3092,6 +3087,9 @@ static void oplus_ufcs_current_work(struct work_struct *work)
 	} else {
 		curr_set = chip->target_curr_ma;
 	}
+
+	if (curr_set > chip->target_curr_ma)
+		curr_set = chip->target_curr_ma;
 
 	chg_err("curr_set=%d, curr_set_ma=%d, target_curr_ma=%d\n", curr_set, chip->curr_set_ma, chip->target_curr_ma);
 

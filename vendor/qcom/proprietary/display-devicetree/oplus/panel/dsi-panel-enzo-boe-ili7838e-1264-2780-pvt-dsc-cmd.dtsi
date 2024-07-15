@@ -3869,7 +3869,7 @@
 	** 5th bit: temperature compensation mode on/off
 	** 9th bit: Decreasing Step Setting on/off
 	*/
-	oplus,adfr-config = <0x211>;  // 0b10'0001'0001
+	oplus,adfr-config = <0x251>;  // 0b10'0101'0001
 
 	qcom,mdss-dsi-display-timings {
 		timing@sa_fhd_144 { /* FHD+ 144hz 1094.4Mbps */

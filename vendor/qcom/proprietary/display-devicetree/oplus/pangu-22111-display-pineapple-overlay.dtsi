@@ -2,7 +2,7 @@
 #include "panel/dsi_panel_AA545_P_1_A0006_dsc_cmd.dtsi"
 
 &soc {
-	oplus_display_dev: oplus,dsi-display-dev {
+	oplus,dsi-display-dev {
 		oplus,dsi-panel-primary = <
 			&dsi_vtdr6130_amoled_video
 			&dsi_panel_AA545_P_3_A0005_dsc_cmd
