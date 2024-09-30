@@ -142,6 +142,11 @@ enum IM_FLAG_TYPE {
 	MAX_IM_FLAG_TYPE,
 };
 
+enum ots_state {
+	OTS_STATE_SET_AFFINITY,
+	OTS_STATE_MAX,
+};
+
 #define MAX_IM_FLAG_PRIO	MAX_IM_FLAG_TYPE
 
 DECLARE_PER_CPU(struct list_head, ux_thread_list);
@@ -209,6 +214,7 @@ struct oplus_task_struct {
 	u64 total_exec;
 	int ux_state;
 	int ux_depth;
+	unsigned long state;
 #if IS_ENABLED(CONFIG_OPLUS_FEATURE_ABNORMAL_FLAG)
 	int abnormal_flag;
 #endif
@@ -220,6 +226,8 @@ struct oplus_task_struct {
 	/* CONFIG_OPLUS_FEATURE_TASK_LOAD */
 	int is_update_runtime;
 	int target_process;
+	pid_t affinity_pid;
+	pid_t affinity_tgid;
 	u64 wake_tid;
 	u64 running_start_time;
 	bool update_running_start_time;
@@ -685,6 +693,7 @@ void android_vh_scheduler_tick_handler(void *unused, struct rq *rq);
 void android_vh_cgroup_set_task_handler(void *unused, int ret, struct task_struct *task);
 /* register vendor hook in kernel/signal.c  */
 void android_vh_exit_signal_handler(void *unused, struct task_struct *p);
+void android_rvh_sched_setaffinity_handler(void *unused, struct task_struct *p, const struct cpumask *in_mask, int *retval);
 #if IS_ENABLED(CONFIG_OPLUS_FEATURE_BAN_APP_SET_AFFINITY)
 void android_vh_sched_setaffinity_early_handler(void *unused, struct task_struct *task, const struct cpumask *new_mask, bool *skip);
 #endif

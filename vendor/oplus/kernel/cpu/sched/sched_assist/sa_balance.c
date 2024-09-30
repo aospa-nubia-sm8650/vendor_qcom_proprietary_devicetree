@@ -2089,6 +2089,7 @@ void add_rt_boost_task(struct task_struct *p)
  */
 void remove_rt_boost_task(struct task_struct *p)
 {
+	int im_flag, prio;
 	unsigned long irqflag;
 	struct oplus_task_struct *ots;
 
@@ -2108,24 +2109,13 @@ void remove_rt_boost_task(struct task_struct *p)
 	if (IS_ERR_OR_NULL(ots))
 		return;
 
-	/*
-	 * There is no need to perform a removal operation if the task
-	 * is not in the rt_boost group at all.
-	 */
-	if (oplus_list_empty(&ots->rtb.node_list))
+	im_flag = oplus_get_im_flag(p);
+	prio = im_flag_to_prio(im_flag);
+	if (prio < 0)
 		return;
 
 	/* Sort according to the priority obtained by im_flag mapping. */
 	spin_lock_irqsave(&rbt_lock, irqflag);
-
-	/*
-	 * Need to re-judge again!
-	 */
-	if (oplus_list_empty(&ots->rtb.node_list)) {
-		spin_unlock_irqrestore(&rbt_lock, irqflag);
-		return;
-	}
-
 	plist_del(&ots->rtb, &rt_boost_task);
 	plist_node_init(&ots->rtb, MAX_IM_FLAG_PRIO);
 

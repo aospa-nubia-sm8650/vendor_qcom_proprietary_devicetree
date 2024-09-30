@@ -5,6 +5,7 @@
 #include "pineapple_overlay_common.dtsi"
 #include "enzo_overlay_common.dtsi"
 #include "oplus_chg/oplus-chg-23607.dtsi"
+#include "oplus_chg/oplus-chg-23607-pps.dtsi"
 #include "oplus_misc/oplus-misc-23607.dtsi"
 #include "sensor/enzo-sensor-23607.dtsi"
 #include "tp/enzo-oplus-tp-23607.dtsi"
