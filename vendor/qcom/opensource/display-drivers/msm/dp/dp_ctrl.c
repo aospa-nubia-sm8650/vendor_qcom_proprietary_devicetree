@@ -1314,7 +1314,7 @@ static int dp_ctrl_stream_on(struct dp_ctrl *dp_ctrl, struct dp_panel *panel)
 	/* wait for link training completion before fec config as per spec */
 	dp_ctrl_fec_setup(ctrl);
 	dp_ctrl_dsc_setup(ctrl, panel);
-	panel->sink_crc_enable(panel, true);
+	panel->sink_crc_enable(panel, false);
 
 	return rc;
 }
