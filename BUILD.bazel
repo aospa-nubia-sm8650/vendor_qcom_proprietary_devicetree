@@ -5,6 +5,7 @@ kernel_dtstree(
     srcs = glob(
         [
             "Makefile",
+	    "qcom/Makefile",
             "qcom/**/*.dtsi",
             "qcom/**/*.dts",
             "zte/Makefile",
